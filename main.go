@@ -18,10 +18,10 @@ func main() {
 
 	// Connect to Carina
 	cli, _ := libcarina.NewClusterClient(libcarina.BetaEndpoint, username, apiKey)
-
-	// Create a new cluster
-	// cluster, _ := cli.Create(libcarina.Cluster{ClusterName: clusterName})
-	cluster, _ := cli.Get(clusterName)
+	cluster, err := cli.Get(clusterName)
+	if err != nil {
+		panic(err)
+	}
 
 	// Wait for it to come up...
 	for cluster.Status == "new" || cluster.Status == "building" {
