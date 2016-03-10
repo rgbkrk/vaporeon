@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"log"
 	"os"
 	"time"
 
@@ -37,6 +37,27 @@ func main() {
 
 	// Straight to Docker, do what you need
 	docker, _ := dockerclient.NewDockerClient(host, tlsConfig)
-	info, _ := docker.Info()
-	fmt.Println(info)
+
+	// Create a container
+	containerConfig := &dockerclient.ContainerConfig{
+		Image:       "whoa/tiny",
+		AttachStdin: true,
+		Tty:         true,
+	}
+
+	containerID, err := docker.CreateContainer(containerConfig, "foobar", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	// Start the container
+	hostConfig := &dockerclient.HostConfig{
+		PublishAllPorts: true,
+		NetworkMode:     "bridge",
+	}
+	err = docker.StartContainer(containerID, hostConfig)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }
