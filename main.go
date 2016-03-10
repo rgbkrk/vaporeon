@@ -53,7 +53,6 @@ func main() {
 	// Start the container
 	hostConfig := &dockerclient.HostConfig{
 		PublishAllPorts: true,
-		NetworkMode:     "bridge",
 	}
 	err = docker.StartContainer(containerID, hostConfig)
 	if err != nil {
