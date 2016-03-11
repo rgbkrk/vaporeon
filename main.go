@@ -43,6 +43,9 @@ func main() {
 		Image:       "whoa/tiny",
 		AttachStdin: true,
 		Tty:         true,
+		HostConfig: dockerclient.HostConfig{
+			PublishAllPorts: true,
+		},
 	}
 
 	containerID, err := docker.CreateContainer(containerConfig, "foobar", nil)
